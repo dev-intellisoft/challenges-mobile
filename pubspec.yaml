@@ -28,6 +28,9 @@ flutter:
     - assets/icons/done.svg
     - assets/icons/search.svg
     - assets/icons/todo.svg
+    - assets/icons/unchecked.svg
+    - assets/icons/pencil.svg
+    - assets/icons/more.svg
   fonts:
     - family: 'Urbanist'
       fonts:
