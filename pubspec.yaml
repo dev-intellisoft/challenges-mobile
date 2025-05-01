@@ -24,6 +24,10 @@ flutter:
   uses-material-design: true
   assets:
     - assets/icons/no_task_icon.svg
+    - assets/icons/create.svg
+    - assets/icons/done.svg
+    - assets/icons/search.svg
+    - assets/icons/todo.svg
   fonts:
     - family: 'Urbanist'
       fonts:
