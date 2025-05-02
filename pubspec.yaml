@@ -31,6 +31,7 @@ flutter:
     - assets/icons/unchecked.svg
     - assets/icons/pencil.svg
     - assets/icons/more.svg
+    - assets/icons/blue_search.svg
   fonts:
     - family: 'Urbanist'
       fonts:
