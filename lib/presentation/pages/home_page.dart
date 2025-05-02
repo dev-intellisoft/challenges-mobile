@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:taski/presentation/viewmodels/task_viewmodel.dart';
 import 'package:taski/presentation/widgets/task_list.dart';
 import 'package:taski/presentation/widgets/add_task_bottom_sheet.dart';
+import 'package:taski/presentation/pages/search_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -116,7 +118,7 @@ class _HomePageState extends State<HomePage> {
             tasks.isEmpty
                 ? 'Create tasks to achieve more.'
                 : "You've got ${tasks.length} tasks to do.",
-            style: Theme.of(context).textTheme.bodyLarge,
+            style: TextStyle(fontSize: 16, color: Color.fromRGBO(141, 156, 184, 1))
           ),
         ],
       ),
@@ -131,11 +133,13 @@ class _HomePageState extends State<HomePage> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildWelcomeText(),
+          if (_selectedIndex != 2) _buildWelcomeText(),
           Expanded(
             child: _selectedIndex == 3
                 ? const TaskList(isCompleted: true)
-                : const TaskList(isCompleted: false),
+                : _selectedIndex == 2
+                    ? const SearchPage()
+                    : const TaskList(isCompleted: false),
           ),
         ],
       ),
@@ -147,49 +151,19 @@ class _HomePageState extends State<HomePage> {
         indicatorColor: Colors.transparent,
         destinations: [
           NavigationDestination(
-            icon: Icon(
-              Icons.view_list_outlined,
-              color: _selectedIndex == 0
-                  ? Theme.of(context).colorScheme.primary
-                  : Colors.grey,
-            ),
+            icon: SvgPicture.asset('assets/icons/todo.svg'),
             label: 'Todo',
           ),
           NavigationDestination(
-            icon: Container(
-              width: 24,
-              height: 24,
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: Colors.grey.shade400,
-                  width: 1.5,
-                ),
-                borderRadius: BorderRadius.circular(6),
-              ),
-              child: Icon(
-                Icons.add,
-                color: Colors.grey.shade400,
-                size: 16,
-              ),
-            ),
+            icon: SvgPicture.asset('assets/icons/create.svg'),
             label: 'Create',
           ),
           NavigationDestination(
-            icon: Icon(
-              Icons.search_outlined,
-              color: _selectedIndex == 2
-                  ? Theme.of(context).colorScheme.primary
-                  : Colors.grey,
-            ),
+            icon: SvgPicture.asset('assets/icons/search.svg'),
             label: 'Search',
           ),
           NavigationDestination(
-            icon: Icon(
-              Icons.check_box_outlined,
-              color: _selectedIndex == 3
-                  ? Theme.of(context).colorScheme.primary
-                  : Colors.grey,
-            ),
+            icon: SvgPicture.asset('assets/icons/done.svg'),
             label: 'Done',
           ),
         ],

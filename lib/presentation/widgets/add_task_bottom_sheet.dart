@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:taski/presentation/viewmodels/task_viewmodel.dart';
 
@@ -33,6 +34,7 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: 423,
       padding: EdgeInsets.only(
         top: 16,
         left: 16,
@@ -43,66 +45,43 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.primary,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: const Icon(
-                  Icons.check,
-                  color: Colors.white,
-                  size: 20,
-                ),
-              ),
-              const SizedBox(width: 8),
-              const Text(
-                'Taski',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 24),
           TextField(
             controller: _titleController,
-            decoration: const InputDecoration(
+            decoration:  InputDecoration(
+              icon: SvgPicture.asset('assets/icons/unchecked.svg'),
               hintText: "What's in your mind?",
-              hintStyle: TextStyle(
-                color: Color(0xFF49454F),
+              hintStyle: const TextStyle(
+                color: Color.fromRGBO(198, 207, 220, 1),
+                fontWeight: FontWeight.w400,
                 fontSize: 16,
               ),
               border: InputBorder.none,
               contentPadding: EdgeInsets.zero,
             ),
             style: const TextStyle(
+              color: Color.fromRGBO(198, 207, 220, 1),
+              fontWeight: FontWeight.w400,
               fontSize: 16,
-              fontWeight: FontWeight.w500,
             ),
           ),
           const SizedBox(height: 16),
           TextField(
             controller: _descriptionController,
-            decoration: const InputDecoration(
+            decoration: InputDecoration(
+              icon: SvgPicture.asset('assets/icons/pencil.svg'),
               hintText: 'Add a note...',
-              hintStyle: TextStyle(
-                color: Color(0xFF49454F),
-                fontSize: 14,
+              hintStyle: const TextStyle(
+                color: Color.fromRGBO(198, 207, 220, 1),
+                fontWeight: FontWeight.w400,
+                fontSize: 16,
               ),
               border: InputBorder.none,
               contentPadding: EdgeInsets.zero,
-              prefixIcon: Icon(
-                Icons.edit_outlined,
-                size: 20,
-                color: Color(0xFF49454F),
-              ),
             ),
             style: const TextStyle(
-              fontSize: 14,
+              color: Color.fromRGBO(198, 207, 220, 1),
+              fontWeight: FontWeight.w400,
+              fontSize: 16,
             ),
           ),
           const SizedBox(height: 24),
@@ -120,8 +99,9 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
               child: const Text(
                 'Create',
                 style: TextStyle(
+                  color: Color.fromRGBO(0, 127, 255, 1),
                   fontSize: 16,
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.w700,
                 ),
               ),
             ),

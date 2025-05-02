@@ -7,6 +7,7 @@ class TaskViewModel extends ChangeNotifier {
   final DatabaseHelper _databaseHelper = DatabaseHelper.instance;
   final List<TaskModel> _tasks = [];
   final List<TaskModel> _completedTasks = [];
+  final List<TaskModel> _searchResults = [];
   bool _isLoading = false;
   int _currentPage = 0;
   int _completedPage = 0;
@@ -14,6 +15,7 @@ class TaskViewModel extends ChangeNotifier {
 
   List<TaskModel> get tasks => _tasks;
   List<TaskModel> get completedTasks => _completedTasks;
+  List<TaskModel> get searchResults => _searchResults;
   bool get isLoading => _isLoading;
 
   Future<void> loadTasks() async {
@@ -107,6 +109,36 @@ class TaskViewModel extends ChangeNotifier {
       notifyListeners();
     } catch (e) {
       debugPrint('Error deleting task: $e');
+    }
+  }
+
+  Future<void> searchTasks(String query) async {
+    if (_isLoading) return;
+    _isLoading = true;
+    notifyListeners();
+
+    try {
+      _searchResults.clear();
+      if (query.isEmpty) {
+        notifyListeners();
+        return;
+      }
+
+      final searchQuery = '%$query%';
+      final db = await _databaseHelper.database;
+      final results = await db.query(
+        'tasks',
+        where: 'title LIKE ? OR description LIKE ?',
+        whereArgs: [searchQuery, searchQuery],
+        orderBy: 'created_at DESC',
+      );
+
+      _searchResults.addAll(results.map((task) => TaskModel.fromJson(task)));
+    } catch (e) {
+      debugPrint('Error searching tasks: $e');
+    } finally {
+      _isLoading = false;
+      notifyListeners();
     }
   }
 } 

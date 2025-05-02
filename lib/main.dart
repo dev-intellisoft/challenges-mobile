@@ -20,6 +20,7 @@ class MyApp extends StatelessWidget {
         title: 'Taski',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
+          fontFamily: 'Urbanist',
           colorScheme: ColorScheme.fromSeed(
             seedColor: const Color(0xFF0066FF),
             primary: const Color(0xFF0066FF),

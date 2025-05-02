@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:taski/data/models/task_model.dart';
 import 'package:taski/presentation/viewmodels/task_viewmodel.dart';
@@ -19,6 +20,7 @@ class TaskList extends StatefulWidget {
 
 class _TaskListState extends State<TaskList> {
   final ScrollController _scrollController = ScrollController();
+  bool isCardOpen = false;
 
   @override
   void initState() {
@@ -48,24 +50,22 @@ class _TaskListState extends State<TaskList> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            Icons.assignment_outlined,
-            size: 120,
-            color: Theme.of(context).colorScheme.primary.withOpacity(0.2),
-          ),
+          SvgPicture.asset('assets/icons/no_task_icon.svg'),
+
           const SizedBox(height: 16),
           Text(
             widget.isCompleted
                 ? 'No completed tasks yet'
                 : 'You have no task listed.',
-            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  color: const Color(0xFF49454F),
-                ),
+            style: const TextStyle(
+              fontSize: 16,
+              color: Color.fromRGBO(141, 156, 184, 1)
+            ),
           ),
           if (!widget.isCompleted) ...[
             const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () {
+            GestureDetector(
+              onTap: () {
                 showModalBottomSheet(
                   context: context,
                   isScrollControlled: true,
@@ -76,25 +76,28 @@ class _TaskListState extends State<TaskList> {
                   builder: (context) => const AddTaskBottomSheet(),
                 );
               },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFFEEF4FF),
-                foregroundColor: const Color(0xFF0066FF),
-                elevation: 0,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 24,
-                  vertical: 20,
+              child: Container(
+                height: 50,
+                width: 151,
+                decoration: BoxDecoration(
+                  color: const Color.fromRGBO(0, 127, 255, .1),
+                  borderRadius: BorderRadius.circular(12)
                 ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
+                child: const Center(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.add, size: 20, color: Color.fromRGBO(0, 127, 255, 1), ),
+                      SizedBox(width: 8),
+                      Text('Create task', style: TextStyle(
+                          color: Color.fromRGBO(0, 127, 255, 1),
+                        fontWeight: FontWeight.w600,
+                        fontSize: 18
+
+                      ),),
+                    ],
+                  ),
                 ),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: const [
-                  Icon(Icons.add, size: 20),
-                  SizedBox(width: 8),
-                  Text('Create task'),
-                ],
               ),
             ),
           ],
@@ -188,39 +191,19 @@ class TaskCard extends StatelessWidget {
     return Card(
       margin: const EdgeInsets.only(bottom: 16),
       child: InkWell(
-        onTap: () {},
+        onTap: () {
+        },
         borderRadius: BorderRadius.circular(12),
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               InkWell(
                 onTap: () {
                   context.read<TaskViewModel>().toggleTaskCompletion(task);
                 },
-                child: Container(
-                  width: 24,
-                  height: 24,
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: isCompleted
-                          ? Theme.of(context).colorScheme.primary
-                          : const Color(0xFF49454F),
-                      width: 2,
-                    ),
-                    borderRadius: BorderRadius.circular(6),
-                    color: isCompleted
-                        ? Theme.of(context).colorScheme.primary
-                        : Colors.transparent,
-                  ),
-                  child: isCompleted
-                      ? const Icon(
-                          Icons.check,
-                          size: 16,
-                          color: Colors.white,
-                        )
-                      : null,
-                ),
+                child: isCompleted?SvgPicture.asset('assets/icons/done.svg'):SvgPicture.asset('assets/icons/unchecked.svg'),
               ),
               const SizedBox(width: 16),
               Expanded(
@@ -231,8 +214,8 @@ class TaskCard extends StatelessWidget {
                       task.title,
                       style: TextStyle(
                         fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        color: textColor,
+                        fontWeight: FontWeight.w600,
+                        color: const Color.fromRGBO(63, 61, 86, 1),
                         decoration: isCompleted
                             ? TextDecoration.lineThrough
                             : TextDecoration.none,
@@ -244,7 +227,8 @@ class TaskCard extends StatelessWidget {
                         task.description,
                         style: TextStyle(
                           fontSize: 14,
-                          color: textColor,
+                          color: const Color.fromRGBO(141, 156, 184, 1),
+                          fontWeight: FontWeight.w400,
                           decoration: isCompleted
                               ? TextDecoration.lineThrough
                               : TextDecoration.none,
@@ -255,10 +239,7 @@ class TaskCard extends StatelessWidget {
                 ),
               ),
               IconButton(
-                icon: Icon(
-                  Icons.more_vert,
-                  color: textColor,
-                ),
+                icon: SvgPicture.asset('assets/icons/more.svg'),
                 onPressed: () {
                   showModalBottomSheet(
                     context: context,
